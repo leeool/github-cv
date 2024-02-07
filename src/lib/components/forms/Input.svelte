@@ -13,13 +13,12 @@
 <style lang="scss">
   label {
     display: grid;
-    gap: 0.25rem;
+    gap: 0.3rem;
     font-weight: 500;
   }
   input {
     padding: 0.5rem 0.75rem;
     font-size: 1rem;
-    border-radius: 0.15rem;
     border: 1px solid #ccc;
     outline: none;
     box-shadow: 0px 0px 0px 0px #fff;
@@ -27,7 +26,7 @@
 
     &:focus,
     &:active {
-      box-shadow: 0px 0px 0px 2px #ddd;
+      box-shadow: 0px 0px 0px 3px #ddd;
       border-color: #ccc;
     }
   }

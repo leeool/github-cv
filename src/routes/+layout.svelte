@@ -5,7 +5,7 @@
 <!-- header -->
 <div class="wrap">
   <header>
-    <h1>Svelte</h1>
+    <h1>Gitæ</h1>
     <nav></nav>
   </header>
   <!-- content -->
@@ -31,6 +31,11 @@
     background-color: #fff;
     border-radius: 0.25rem;
     padding: 0.25rem;
+    width: 100%;
+
+    h1 {
+      text-align: center;
+    }
   }
 
   .wrap {
@@ -40,7 +45,9 @@
   }
 
   footer {
-    background-color: #fff;
+    background-color: #333;
+    padding: 1rem;
+    color: #fff;
   }
 
 </style>

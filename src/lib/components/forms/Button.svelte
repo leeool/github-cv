@@ -10,8 +10,7 @@
 
 <style lang="scss">
   button {
-    padding: 0.5rem 1.5rem;
-    border-radius: 0.25rem;
+    padding: 0.5rem 2rem;
     font-size: 1rem;
     font-weight: 500;
     border: 1px solid #ccc;
