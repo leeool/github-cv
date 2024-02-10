@@ -23,34 +23,26 @@ export const actions = {
       headers: { "content-type": "application/json" }
     })
 
-    console.log(await res.json())
-
     if (!res.ok) {
       return { success: false }
     }
 
-    const user: IUser = await res.json()
+    const user = await res.json()
 
-    cookies.set("session_id", user.id, {
-      path: '/',
-      httpOnly: true,
-      sameSite: 'strict',
-      secure: false,
-      maxAge: 60 * 60 * 24 * 7 // uma semana 
-    })
+     cookies.set("session_id", user.id, {
+       path: '/',
+       httpOnly: true,
+       sameSite: 'strict',
+       secure: false,
+       maxAge: 60 * 60 * 24 * 7 // uma semana 
+     })
 
-    throw redirect(303, "/")
+    // throw redirect(303, "/")
 
   },
 } satisfies Actions
 
 
-const a = async (): Promise<[]> => {
-  const value = await Promise.all([])
-  return value
-}
 
-
-console.log(a);
 
 

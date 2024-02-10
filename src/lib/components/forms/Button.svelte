@@ -1,16 +1,13 @@
 <script lang="ts">
-  export let label: string;
-  export let className: string = "";
-
 </script>
 
 <button on:click {...$$restProps}>
-  {label}
+  <slot />
 </button>
 
 <style lang="scss">
   button {
-    padding: 0.5rem 2rem;
+    padding: 0.5rem 1.5rem;
     font-size: 1rem;
     font-weight: 500;
     border: 1px solid #ccc;
@@ -19,9 +16,11 @@
 
     &:hover {
       background-color: #fafafa;
+      border-color: #333;
     }
     &:active {
-      background-color: #eee;
+      background-color: #333;
+      color: #fff
     }
   }
 </style>

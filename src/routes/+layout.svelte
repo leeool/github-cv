@@ -5,7 +5,9 @@
 <!-- header -->
 <div class="wrap">
   <header>
-    <h1>Gitæ</h1>
+    <a href="/">
+      <h1>gitæ</h1>
+    </a>
     <nav></nav>
   </header>
   <!-- content -->
@@ -14,13 +16,13 @@
   </main>
   <!-- footer -->
   <footer>
-    <h2>footer</h2>
+    <h2>Criado por leoldev</h2>
   </footer>
 </div>
 
 <style lang="scss">
   main {
-    max-width: 80rem;
+    max-width: 60rem;
     padding: 1rem;
     margin: 3rem auto;
     width: 100%;
@@ -32,9 +34,18 @@
     border-radius: 0.25rem;
     padding: 0.25rem;
     width: 100%;
+    display: flex;
+    justify-content: center;
 
     h1 {
       text-align: center;
+      color: #333;
+      width: fit-content;
+
+      &:hover {
+        background-color: #333;
+        color: #fff;
+      }
     }
   }
 
@@ -45,9 +56,13 @@
   }
 
   footer {
-    background-color: #333;
     padding: 1rem;
-    color: #fff;
-  }
+    border-top: 1px solid #ccc;
 
+    h2 {
+      font-size: 1rem;
+      color: #aaa;
+      font-weight: 500;
+    }
+  }
 </style>

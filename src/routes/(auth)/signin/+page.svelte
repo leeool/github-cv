@@ -1,21 +1,14 @@
 <script asscript lang="ts">
   import { Input, Button } from "$lib/components";
   import Form from "../components/Form.svelte";
-  import {goto} from "$app/navigation";
+  import { goto } from "$app/navigation";
 </script>
 
-<Form action="?/signup" method="POST">
-  <h2>Cadastre-se.</h2>
+<Form action="?/login" method="POST">
+  <h2>Logue-se.</h2>
   <Input
-    label="Nome de usuário"
-    name="username"
-    placeholder="Como deseja ser chamado?"
-    required
-  />
-  <Input
-    label="E-mail"
+    label="E-mail ou Nome de usuário"
     name="email"
-    type="email"
     placeholder="exemplo@email.com"
     required
   />
@@ -27,12 +20,19 @@
     required
   />
   <div class="btn-wrapper">
-    <Button label="Login" on:click={() => goto("/auth/signin")} type="button"/>
-    <Button label="Avançar" />
+    <Button on:click={() => goto("/signup")} type="button"
+      >Não tenho uma conta</Button
+    >
+    <Button on:click={() => console.log("oi")}>Entrar</Button>
   </div>
 </Form>
 
 <style lang="scss">
+  h2 {
+    font-size: 1rem;
+    color: #333;
+  }
+
   .btn-wrapper {
     display: flex;
     justify-content: space-between;
