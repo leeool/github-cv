@@ -6,7 +6,7 @@ declare global {
     // interface Locals {}
     // interface PageData {}
     interface PageState {
-      newCv: {
+      newCv?: {
         openModal?: boolean
         error?: string
         selectedUserId?: number

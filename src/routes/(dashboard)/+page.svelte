@@ -3,14 +3,15 @@
   import { page } from "$app/stores";
   import NewCvModal from "./new-cv/NewCvModal.svelte";
 
-  const openModal = () => {
-    pushState("/new-cv", { newCv: {openModal: true} });
+  const handleOpen = () => {
+    pushState("/new-cv", {newCv: {openModal: true}});
   };
+
 </script>
 
 <nav>
   <h1>Novo</h1>
-  <button on:click={openModal}>Novo</button>
+  <button on:click={handleOpen}>Novo</button>
   <button on:click={() => goto("/signin")}>Sair</button>
 </nav>
 <nav>
@@ -18,9 +19,11 @@
   <button on:click={() => goto("/cv")}>Meus CVs</button>
 </nav>
 
-{#if $page.state.newCv?.openModal}
+<button on:click={handleOpen}>abrir</button>
+
+<dialog open={$page.state.newCv?.openModal}>
   <NewCvModal />
-{/if}
+</dialog>
 
 <style lang="scss">
   nav {
@@ -49,5 +52,16 @@
     &:active {
       background-color: #444;
     }
+  }
+
+  dialog {
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100dvh;
+    border: none;
+    background: transparent;
   }
 </style>

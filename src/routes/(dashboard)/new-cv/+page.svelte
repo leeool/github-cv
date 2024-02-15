@@ -1,8 +1,7 @@
 <script lang="ts">
   import { goto, pushState } from "$app/navigation";
   import { onMount } from "svelte";
-
-  onMount(() => {
-    goto("/")
-  });
+  import NewCvModal from "./NewCvModal.svelte";
 </script>
+
+<NewCvModal />

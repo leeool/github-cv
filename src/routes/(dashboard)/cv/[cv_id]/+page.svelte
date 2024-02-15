@@ -4,7 +4,16 @@
   import { getUserStore } from "$lib/userContext.svelte";
   const user = getUserStore();
 
-  let name = $state($page.params.cv_id) 
+  let name = $state("");
+
+  $effect(() => {
+    name = $page.params.cv_id;
+  });
+
+  const changeUser = () => {
+    if (!$user) return;
+    $user = { ...$user, email: "teste" };
+  };
 </script>
 
 <div class="container">
@@ -12,11 +21,10 @@
     <Editable bind:value={name} />
     <p>alterou {name}</p>
     {#if $user}
+      <p>{$user.id}</p>
+      <p>{$user.username}</p>
       <p>{$user.email}</p>
-      <button
-        on:click={() => $user = { ...$user, email: "leonardo@gmail.com" }}
-        >alterar usuario</button
-      >
+      <button on:click={changeUser}>alterar usuario</button>
     {/if}
   </div>
 </div>

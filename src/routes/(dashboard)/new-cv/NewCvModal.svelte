@@ -2,19 +2,23 @@
   import { Button, Input } from "$lib/components";
   import { onMount } from "svelte";
   import { page } from "$app/stores";
-  import {  goto, replaceState } from "$app/navigation";
+  import { goto, replaceState } from "$app/navigation";
 
   let container: HTMLDivElement;
   let username = "leeool";
   let githubUsers: Pick<IGithubUser, "login" | "avatar_url" | "id">[] = [];
   let error: boolean = false;
 
+  const handleClose = () => {
+    history.back();
+  };
+
   onMount(() => {
     const closeOnClick = (e: MouseEvent) => {
       const target = e.target as HTMLDivElement;
 
       if (target.classList.contains("container")) {
-        history.back()
+        history.back();
       }
     };
     container.addEventListener("mousedown", closeOnClick);
@@ -31,13 +35,12 @@
 
     if (!req.ok) {
       error = true;
-      githubUsers = []
+      githubUsers = [];
     }
 
     const json = await req.json();
     githubUsers = json;
   };
-
 </script>
 
 <div class="container" bind:this={container}>
@@ -50,7 +53,7 @@
         bind:value={username}
       />
       <div class="btn-wrapper">
-        <Button on:click={() => history.back()} type="button">Cancelar</Button>
+        <Button on:click={handleClose} type="button">Cancelar</Button>
         <Button on:click={handleSearch} on:submit={handleSearch}>Buscar</Button>
       </div>
     </form>
@@ -59,7 +62,9 @@
       <ul class="user-list">
         {#each githubUsers as { login, id, avatar_url }}
           <li
-            class={`user ${id === $page.state.newCv.selectedUserId ? "selected" : ""}`}
+            class={`user ${
+              id === $page.state?.newCv?.selectedUserId ? "selected" : ""
+            }`}
           >
             <button
               on:click={() => {
@@ -74,13 +79,16 @@
           </li>
         {/each}
       </ul>
-      <Button disabled={!$page.state.newCv.selectedUserId} on:click={() => goto("/cv/" + $page.state.newCv.selectedUserId)}>Criar</Button>
+      <Button
+        disabled={!$page.state?.newCv?.selectedUserId}
+        on:click={() => goto("/cv/" + $page.state?.newCv?.selectedUserId)}
+        >Criar</Button
+      >
     {/if}
 
     {#if error}
       <p>Nenhum resultado encontrado</p>
     {/if}
-
   </div>
 </div>
 
