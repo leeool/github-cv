@@ -6,7 +6,7 @@
 <div>
   <label>
     {label}
-    <input bind:value {...$$restProps} />
+    <input bind:value  {...$$restProps} />
   </label>
 </div>
 

@@ -22,5 +22,12 @@
       background-color: #333;
       color: #fff
     }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      pointer-events: none;
+
+    }
   }
 </style>

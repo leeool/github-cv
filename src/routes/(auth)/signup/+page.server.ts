@@ -1,3 +1,4 @@
+import { API_URL } from '$lib/constants'
 import type { Actions } from './$types'
 import { redirect } from "@sveltejs/kit"
 
@@ -17,7 +18,7 @@ export const actions = {
 
     console.log(body)
 
-    const res = await fetch("http://localhost:8080/auth/signup", {
+    const res = await fetch(`${API_URL}/auth/signup`, {
       method: "POST",
       body,
       headers: { "content-type": "application/json" }

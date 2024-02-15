@@ -1,19 +1,31 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+  import { onMount } from "svelte";
 
-
-  export let value: string | null
-  let editable: HTMLDivElement
+  export let value: string | null;
+  let editable: HTMLDivElement;
 
   const handleBlur = (e: Event) => {
-    let target = e.target as HTMLDivElement
-    let newValue = target.textContent
-    value = newValue
-  }
+    let target = e.target as HTMLDivElement;
+    let newValue = target.textContent;
+    if (newValue === value) return;
+    value = newValue;
+  };
 
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.code === "Enter") return editable.blur();
+  };
 </script>
 
-<div contenteditable="true" bind:this={editable} on:blur={handleBlur} role="button" aria-hidden="true">{value}</div>
+<div
+  contenteditable="true"
+  bind:this={editable}
+  on:blur={handleBlur}
+  on:keydown={handleKeyDown}
+  role="button"
+  aria-hidden="true"
+>
+  {value}
+</div>
 
 <style lang="scss">
   div {
@@ -25,5 +37,4 @@
       background-color: #3331;
     }
   }
-
 </style>

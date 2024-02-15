@@ -4,12 +4,7 @@
   import NewCvModal from "./new-cv/NewCvModal.svelte";
 
   const openModal = () => {
-    pushState("new-cv", { openModal: true });
-  };
-
-  const closeModal = () => {
-    console.log($page.state.openModal);
-    history.back();
+    pushState("/new-cv", { newCv: {openModal: true} });
   };
 </script>
 
@@ -20,11 +15,11 @@
 </nav>
 <nav>
   <h1>Recentes</h1>
-  <button>Meus CVs</button>
+  <button on:click={() => goto("/cv")}>Meus CVs</button>
 </nav>
 
-{#if $page.state.openModal}
-  <NewCvModal onClose={closeModal} />
+{#if $page.state.newCv?.openModal}
+  <NewCvModal />
 {/if}
 
 <style lang="scss">

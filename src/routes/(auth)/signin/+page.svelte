@@ -10,6 +10,7 @@
     label="E-mail ou Nome de usuário"
     name="email"
     placeholder="exemplo@email.com"
+    value="leol@gmail.com"
     required
   />
   <Input
@@ -17,6 +18,7 @@
     type="password"
     name="password"
     placeholder="••••••••••••••"
+    value="admin123"
     required
   />
   <div class="btn-wrapper">

@@ -6,8 +6,11 @@ declare global {
     // interface Locals {}
     // interface PageData {}
     interface PageState {
-      openModal: boolean
-      error: string
+      newCv: {
+        openModal?: boolean
+        error?: string
+        selectedUserId?: number
+      }
     }
     // interface Platform {}
   }

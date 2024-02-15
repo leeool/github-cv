@@ -1,57 +1,86 @@
 <script lang="ts">
   import { Button, Input } from "$lib/components";
   import { onMount } from "svelte";
-  import {page} from "$app/stores"
-  import { goto, pushState } from "$app/navigation";
+  import { page } from "$app/stores";
+  import {  goto, replaceState } from "$app/navigation";
 
-  export let onClose: () => void;
   let container: HTMLDivElement;
-  let username = ""
+  let username = "leeool";
+  let githubUsers: Pick<IGithubUser, "login" | "avatar_url" | "id">[] = [];
+  let error: boolean = false;
 
   onMount(() => {
     const closeOnClick = (e: MouseEvent) => {
-    const target = e.target as HTMLDivElement;
+      const target = e.target as HTMLDivElement;
 
-    if (target.classList.contains("container")) {
-        onClose();
-    }
-    }
-    container.addEventListener("click", closeOnClick);
+      if (target.classList.contains("container")) {
+        history.back()
+      }
+    };
+    container.addEventListener("mousedown", closeOnClick);
 
-    return () => container.removeEventListener("click", closeOnClick)
+    return () => container.removeEventListener("mousedown", closeOnClick);
   });
 
-  const onSubmit = async (e: SubmitEvent) => {
-    e.preventDefault()
-    pushState("/new-cv", { openModal: true})
-
-    const req = await fetch(`https://api.github.com/users/${username}`)
+  const handleSearch = async () => {
+    error = false;
+    const req = await fetch(`?user=${username}`, {
+      method: "GET",
+      headers: { "content-type": "application/json" },
+    });
 
     if (!req.ok) {
-      pushState("/new-cv", {error: "Usuário não encontrado", openModal: true})
-      return
+      error = true;
+      githubUsers = []
     }
-    const userData: IGithubUser = await req.json()
 
-    goto(`/${userData.login}`)
+    const json = await req.json();
+    githubUsers = json;
+  };
 
-    console.log(userData)
-  }
 </script>
 
 <div class="container" bind:this={container}>
   <div class="content">
-  <form  on:submit={onSubmit}>
-    <h1>Selecione um usuário</h1>
-    <Input label="Nome de usuário" placeholder="usuario_exemplo"  bind:value={username}/>
-    <div class="btn-wrapper">
-      <Button on:click={onClose} type="button">Cancelar</Button>
-      <Button on:click={() => {}}>Criar</Button>
-    </div>
-  </form>
-  {#if $page.state.error}
-    <p>{$page.state.error}</p>
-  {/if}
+    <form class="form" on:submit|preventDefault={() => {}}>
+      <h1>Selecione um usuário</h1>
+      <Input
+        label="Nome de usuário"
+        placeholder="usuario_exemplo"
+        bind:value={username}
+      />
+      <div class="btn-wrapper">
+        <Button on:click={() => history.back()} type="button">Cancelar</Button>
+        <Button on:click={handleSearch} on:submit={handleSearch}>Buscar</Button>
+      </div>
+    </form>
+
+    {#if githubUsers.length > 0}
+      <ul class="user-list">
+        {#each githubUsers as { login, id, avatar_url }}
+          <li
+            class={`user ${id === $page.state.newCv.selectedUserId ? "selected" : ""}`}
+          >
+            <button
+              on:click={() => {
+                replaceState("", {
+                  newCv: { openModal: true, selectedUserId: id },
+                });
+              }}
+            >
+              <img src={avatar_url} alt={`Imagem de avatar de ${login}`} />
+              <h3>{login}</h3>
+            </button>
+          </li>
+        {/each}
+      </ul>
+      <Button disabled={!$page.state.newCv.selectedUserId} on:click={() => goto("/cv/" + $page.state.newCv.selectedUserId)}>Criar</Button>
+    {/if}
+
+    {#if error}
+      <p>Nenhum resultado encontrado</p>
+    {/if}
+
   </div>
 </div>
 
@@ -77,7 +106,7 @@
     width: 100%;
     max-width: 30rem;
 
-    form {
+    .form {
       display: grid;
       gap: 1rem;
     }
@@ -86,5 +115,39 @@
   .btn-wrapper {
     display: flex;
     justify-content: space-between;
+  }
+
+  .user-list {
+    max-height: 20rem;
+    overflow-y: auto;
+    display: grid;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+
+    button {
+      all: unset;
+    }
+
+    img {
+      max-width: 100%;
+      height: 4rem;
+    }
+
+    .user button {
+      width: 100%;
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #eee;
+      }
+    }
+
+    .selected button {
+      color: #fff;
+      background-color: #333 !important;
+    }
   }
 </style>
