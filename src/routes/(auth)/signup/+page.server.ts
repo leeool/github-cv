@@ -1,6 +1,5 @@
 import { API_URL } from '$lib/constants'
 import type { Actions } from './$types'
-import { redirect } from "@sveltejs/kit"
 
 export const actions = {
   signup: async ({ request, cookies }) => {
@@ -15,8 +14,6 @@ export const actions = {
     if (!email || !username || !password) return
 
     const body = JSON.stringify({ username, password, email })
-
-    console.log(body)
 
     const res = await fetch(`${API_URL}/auth/signup`, {
       method: "POST",

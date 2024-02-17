@@ -1,7 +1,4 @@
-<script lang="ts">
-</script>
-
-<button on:click {...$$restProps}>
+<button {...$$restProps} on:click>
   <slot />
 </button>
 
@@ -20,14 +17,13 @@
     }
     &:active {
       background-color: #333;
-      color: #fff
+      color: #fff;
     }
 
     &:disabled {
       opacity: 0.7;
       cursor: not-allowed;
       pointer-events: none;
-
     }
   }
 </style>

@@ -4,22 +4,30 @@
   import NewCvModal from "./new-cv/NewCvModal.svelte";
 
   const handleOpen = () => {
-    pushState("/new-cv", {newCv: {openModal: true}});
+    pushState("/new-cv", { newCv: { openModal: true } });
   };
 
 </script>
 
 <nav>
   <h1>Novo</h1>
-  <button on:click={handleOpen}>Novo</button>
-  <button on:click={() => goto("/signin")}>Sair</button>
+  <ul>
+    <li>
+      <button on:click={handleOpen}>Novo</button>
+    </li>
+    <li>
+      <button on:click={() => goto("/signin")}>Sair</button>
+    </li>
+  </ul>
 </nav>
 <nav>
   <h1>Recentes</h1>
-  <button on:click={() => goto("/cv")}>Meus CVs</button>
+  <ul>
+    <li>
+      <button on:click={() => goto("/cv")}>Meus CVs</button>
+    </li>
+  </ul>
 </nav>
-
-<button on:click={handleOpen}>abrir</button>
 
 <dialog open={$page.state.newCv?.openModal}>
   <NewCvModal />
@@ -31,6 +39,11 @@
     gap: 0.5rem;
     align-content: start;
     justify-items: start;
+
+    ul {
+      display: grid;
+      gap: 0.5rem;
+    }
 
     h1 {
       color: #333;

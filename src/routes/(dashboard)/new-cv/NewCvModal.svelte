@@ -3,14 +3,20 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { goto, replaceState } from "$app/navigation";
+  import { enhance } from "$app/forms";
+  import type { ActionResult } from "@sveltejs/kit";
 
-  let container: HTMLDivElement;
-  let username = "leeool";
+  let BgContainer: HTMLDivElement;
   let githubUsers: Pick<IGithubUser, "login" | "avatar_url" | "id">[] = [];
   let error: boolean = false;
+  let username = "leeool";
 
   const handleClose = () => {
     history.back();
+  };
+
+  const handleCreateCv = () => {
+    goto("/cv/" + $page.state?.newCv?.selectedUserId);
   };
 
   onMount(() => {
@@ -18,43 +24,43 @@
       const target = e.target as HTMLDivElement;
 
       if (target.classList.contains("container")) {
-        history.back();
+        handleClose();
       }
     };
-    container.addEventListener("mousedown", closeOnClick);
 
-    return () => container.removeEventListener("mousedown", closeOnClick);
+    BgContainer.addEventListener("mousedown", closeOnClick);
+    return () => BgContainer.removeEventListener("mousedown", closeOnClick);
   });
 
-  const handleSearch = async () => {
-    error = false;
-    const req = await fetch(`?user=${username}`, {
-      method: "GET",
-      headers: { "content-type": "application/json" },
-    });
-
-    if (!req.ok) {
-      error = true;
-      githubUsers = [];
-    }
-
-    const json = await req.json();
-    githubUsers = json;
+  const handleEnhance = () => {
+    return async ({ result }: { result: ActionResult }) => {
+      if (result.type === "redirect") {
+        goto(result.location);
+      } else if (result.type === "success") {
+        githubUsers = result.data?.githubUsers as IGithubUser[];
+      }
+    };
   };
 </script>
 
-<div class="container" bind:this={container}>
+<div class="container" bind:this={BgContainer}>
   <div class="content">
-    <form class="form" on:submit|preventDefault={() => {}}>
+    <form
+      class="form"
+      method="POST"
+      action={`?/search&username=${username}`}
+      use:enhance={handleEnhance}
+    >
       <h1>Selecione um usuário</h1>
       <Input
         label="Nome de usuário"
         placeholder="usuario_exemplo"
+        type="text"
         bind:value={username}
       />
       <div class="btn-wrapper">
         <Button on:click={handleClose} type="button">Cancelar</Button>
-        <Button on:click={handleSearch} on:submit={handleSearch}>Buscar</Button>
+        <Button>Buscar</Button>
       </div>
     </form>
 
@@ -68,7 +74,7 @@
           >
             <button
               on:click={() => {
-                replaceState("", {
+                replaceState("/new-cv", {
                   newCv: { openModal: true, selectedUserId: id },
                 });
               }}
@@ -81,9 +87,10 @@
       </ul>
       <Button
         disabled={!$page.state?.newCv?.selectedUserId}
-        on:click={() => goto("/cv/" + $page.state?.newCv?.selectedUserId)}
-        >Criar</Button
+        on:click={handleCreateCv}
       >
+        Criar
+      </Button>
     {/if}
 
     {#if error}

@@ -1,14 +1,24 @@
 import { getContext, setContext } from "svelte"
 import { writable, type Writable } from "svelte/store"
 
+interface IUserStore {
+  user: IUser | null,
+  isLoggedIn: boolean
+}
 
 export const setUserStore = () => {
-  const user = writable<IUser | null>(null)
-  setContext("user", user)
+  const user = null
+  const isLoggedIn = false
+
+  const userStore: Writable<IUserStore> = writable({
+    user,
+    isLoggedIn
+  })
+  setContext("user_store", userStore)
 }
 
 export const getUserStore = () => {
-  return getContext<Writable<IUser | null>>("user")
+  return getContext<Writable<IUserStore>>("user_store")
 }
 // const userContext = () => {
 //   let user: IUser | null = $state(null)

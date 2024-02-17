@@ -1,18 +1,19 @@
 <script lang="ts">
+    import { afterNavigate } from "$app/navigation";
   import { page } from "$app/stores";
   import { Editable } from "$lib/components";
   import { getUserStore } from "$lib/userContext.svelte";
-  const user = getUserStore();
+  const userStore = getUserStore();
 
-  let name = $state("");
+  let name = "";
 
-  $effect(() => {
+  afterNavigate(() => {
     name = $page.params.cv_id;
   });
 
   const changeUser = () => {
-    if (!$user) return;
-    $user = { ...$user, email: "teste" };
+    if (!$userStore.user) return;
+    $userStore.user = { ...$userStore.user, email: "teste" };
   };
 </script>
 
@@ -20,10 +21,10 @@
   <div class="content">
     <Editable bind:value={name} />
     <p>alterou {name}</p>
-    {#if $user}
-      <p>{$user.id}</p>
-      <p>{$user.username}</p>
-      <p>{$user.email}</p>
+    {#if $userStore.user}
+      <p>{$userStore.user.id}</p>
+      <p>{$userStore.user.username}</p>
+      <p>{$userStore.user.email}</p>
       <button on:click={changeUser}>alterar usuario</button>
     {/if}
   </div>

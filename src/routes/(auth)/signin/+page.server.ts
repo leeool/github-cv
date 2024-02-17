@@ -27,7 +27,5 @@ export const actions = {
       secure: false,
       maxAge: 60 * 60 * 24 * 7 // uma semana 
     })
-
-    console.log({ email, password, token })
   },
 } satisfies Actions;
