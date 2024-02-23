@@ -49,8 +49,8 @@
     }
 
     &:hover:not(:focus) {
-      background-color: #eee5;
-      box-shadow: 0px 0px 0px 2px #ddd;
+      background-color: #eee3;
+      box-shadow: 0px 0px 0px 1px #ccc;
     }
   }
 </style>

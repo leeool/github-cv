@@ -22,10 +22,10 @@
     required
   />
   <div class="btn-wrapper">
-    <Button on:click={() => goto("/signup")} type="button"
-      >Não tenho uma conta</Button
-    >
-    <Button on:click={() => console.log("oi")}>Entrar</Button>
+    <a href="/signup">
+      <Button type="button">Não tenho uma conta</Button>
+    </a>
+    <Button>Entrar</Button>
   </div>
 </Form>
 
@@ -36,8 +36,7 @@
   }
 
   .btn-wrapper {
-    display: grid;
+    display: flex;
     justify-content: space-between;
-    grid-template-columns: 14rem 8rem;
   }
 </style>

@@ -116,8 +116,9 @@
 
 <style lang="scss">
   .create-form {
-    width: 100%;
+    display: grid;
   }
+
   .container {
     position: absolute;
     top: 0;
@@ -146,9 +147,8 @@
   }
 
   .btn-wrapper {
-    display: grid;
+    display: flex;
     justify-content: space-between;
-    grid-template-columns: 8rem 8rem;
   }
 
   .user-list {

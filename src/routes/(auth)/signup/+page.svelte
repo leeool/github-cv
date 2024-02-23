@@ -30,10 +30,10 @@
     required
   />
   <div class="btn-wrapper">
-    <Button on:click={() => goto("/signin")} type="button"
-      >Já tenho uma conta</Button
-    >
-    <Button on:click={() => console.log("oi")}>Avançar</Button>
+    <a href="/signin">
+      <Button type="button">Já tenho uma conta</Button>
+    </a>
+    <Button>Avançar</Button>
   </div>
 </Form>
 
@@ -44,8 +44,7 @@
   }
 
   .btn-wrapper {
-    display: grid;
+    display: flex;
     justify-content: space-between;
-    grid-template-columns: 14rem 8rem;
   }
 </style>
