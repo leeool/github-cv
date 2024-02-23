@@ -44,7 +44,8 @@
   }
 
   .btn-wrapper {
-    display: flex;
+    display: grid;
     justify-content: space-between;
+    grid-template-columns: 14rem 8rem;
   }
 </style>

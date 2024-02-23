@@ -22,9 +22,9 @@
 
 <style lang="scss">
   main {
-    max-width: 60rem;
+    max-width: 70rem;
     padding: 1rem;
-    margin: 3rem auto;
+    margin: 2rem auto;
     width: 100%;
     flex: 1;
     display: grid;
@@ -57,11 +57,11 @@
 
   footer {
     padding: 1rem;
-    border-top: 1px solid #ccc;
+    border-top: 2px solid #eee;
 
     h2 {
       font-size: 1rem;
-      color: #aaa;
+      color: #ccc;
       font-weight: 500;
     }
   }

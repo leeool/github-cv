@@ -3,16 +3,19 @@ import { writable, type Writable } from "svelte/store"
 
 interface IUserStore {
   user: IUser | null,
-  isLoggedIn: boolean
+  isLoggedIn: boolean,
+  curriculumData: ICurriculum | null
 }
 
 export const setUserStore = () => {
   const user = null
   const isLoggedIn = false
+  const curriculumData = null
 
   const userStore: Writable<IUserStore> = writable({
     user,
-    isLoggedIn
+    isLoggedIn,
+    curriculumData
   })
   setContext("user_store", userStore)
 }

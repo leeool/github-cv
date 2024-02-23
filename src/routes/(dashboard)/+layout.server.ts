@@ -1,6 +1,6 @@
 import type { RequestEvent } from "./$types"
 
-export const load = async ({ cookies, locals }: RequestEvent) => {
+export const load = async ({ locals }: RequestEvent) => {
 
   return { user: locals.user }
 }

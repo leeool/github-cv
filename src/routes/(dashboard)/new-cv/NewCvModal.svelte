@@ -15,10 +15,6 @@
     history.back();
   };
 
-  const handleCreateCv = () => {
-    goto("/cv/" + $page.state?.newCv?.selectedUserId);
-  };
-
   onMount(() => {
     const closeOnClick = (e: MouseEvent) => {
       const target = e.target as HTMLDivElement;
@@ -32,12 +28,29 @@
     return () => BgContainer.removeEventListener("mousedown", closeOnClick);
   });
 
-  const handleEnhance = () => {
+  const handleSearch = () => {
     return async ({ result }: { result: ActionResult }) => {
       if (result.type === "redirect") {
         goto(result.location);
       } else if (result.type === "success") {
         githubUsers = result.data?.githubUsers as IGithubUser[];
+      }
+    };
+  };
+
+  const handleCreate = () => {
+    return async ({
+      result,
+    }: {
+      result: ActionResult<Record<"cvData", ICurriculum>>;
+    }) => {
+      if (result.type === "redirect") {
+        goto(result.location);
+      } else if (result.type === "success") {
+        const data = result.data?.cvData;
+
+        if (!data) return;
+        goto(`/cv/${data?.id}`);
       }
     };
   };
@@ -49,7 +62,7 @@
       class="form"
       method="POST"
       action={`?/search&username=${username}`}
-      use:enhance={handleEnhance}
+      use:enhance={handleSearch}
     >
       <h1>Selecione um usuário</h1>
       <Input
@@ -85,12 +98,14 @@
           </li>
         {/each}
       </ul>
-      <Button
-        disabled={!$page.state?.newCv?.selectedUserId}
-        on:click={handleCreateCv}
+      <form
+        method="POST"
+        action={`?/create&id=${$page.state?.newCv?.selectedUserId}`}
+        use:enhance={handleCreate}
+        class="create-form"
       >
-        Criar
-      </Button>
+        <Button disabled={!$page.state?.newCv?.selectedUserId}>Criar</Button>
+      </form>
     {/if}
 
     {#if error}
@@ -100,6 +115,9 @@
 </div>
 
 <style lang="scss">
+  .create-form {
+    width: 100%;
+  }
   .container {
     position: absolute;
     top: 0;
@@ -128,8 +146,9 @@
   }
 
   .btn-wrapper {
-    display: flex;
+    display: grid;
     justify-content: space-between;
+    grid-template-columns: 8rem 8rem;
   }
 
   .user-list {
@@ -163,6 +182,10 @@
     .selected button {
       color: #fff;
       background-color: #333 !important;
+
+      h3 {
+        color: #fff;
+      }
     }
   }
 </style>

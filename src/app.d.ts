@@ -13,6 +13,7 @@ declare global {
         error?: string
         selectedUserId?: number
       }
+      cvData?: ICurriculum
     }
     // interface Platform {}
   }

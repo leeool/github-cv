@@ -1,45 +1,89 @@
 <script lang="ts">
-    import { afterNavigate } from "$app/navigation";
-  import { page } from "$app/stores";
   import { Editable } from "$lib/components";
-  import { getUserStore } from "$lib/userContext.svelte";
-  const userStore = getUserStore();
+  import type { LayoutData } from "./$types";
 
-  let name = "";
+  export let data: LayoutData;
+  let updatedCurriculum: ICurriculumDto = {
+    name: data.curriculum.name,
+    job_title: data.curriculum.job_title,
+    about: data.curriculum.about,
+    skills: data.curriculum.skills,
+  };
 
-  afterNavigate(() => {
-    name = $page.params.cv_id;
-  });
+  const handleChange = (value: string, key: keyof ICurriculum) => {
+    updatedCurriculum = {
+      ...updatedCurriculum,
+      [key]: value,
+    };
 
-  const changeUser = () => {
-    if (!$userStore.user) return;
-    $userStore.user = { ...$userStore.user, email: "teste" };
   };
 </script>
 
 <div class="container">
-  <div class="content">
-    <Editable bind:value={name} />
-    <p>alterou {name}</p>
-    {#if $userStore.user}
-      <p>{$userStore.user.id}</p>
-      <p>{$userStore.user.username}</p>
-      <p>{$userStore.user.email}</p>
-      <button on:click={changeUser}>alterar usuario</button>
-    {/if}
+  <div class="github-content"></div>
+  <div class="cv-container">
+    <div class="cv-content">
+      <div class="name-container">
+        <Editable
+          value={data.curriculum.name}
+          key="name"
+          placeholder="Nome completo"
+          onChange={handleChange}>{data.curriculum.name}</Editable
+        >
+      </div>
+      <Editable
+        value={data.curriculum.job_title}
+        key="job_title"
+        placeholder="Sua área de atuação"
+        onChange={handleChange}>{data.curriculum.job_title}</Editable
+      >
+      <Editable
+        value={data.curriculum.about}
+        key="about"
+        placeholder="Sobre você"
+        onChange={handleChange}>{data.curriculum.about}</Editable
+      >
+    </div>
   </div>
 </div>
 
 <style lang="scss">
   .container {
-    background-color: #eee;
-    height: 100dvh;
-    padding: 1rem;
+    display: grid;
+    grid-template-columns: 0.5fr 1fr;
+    gap: 2rem;
+    max-height: calc(100dvh - 13rem);
   }
 
-  .content {
+  .github-content {
     background-color: #fff;
-    padding: 1rem;
     height: 100%;
+    box-shadow: 0px 0px 0px 2px #eee;
+  }
+
+  .cv-container {
+    background-color: #fff;
+    box-shadow: 0px 0px 0px 2px #eee;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cv-content {
+      width: 100%;
+      height: 70rem;
+      padding: 1rem;
+
+      .name-container {
+        background-color: #333;
+        padding: 1rem 0;
+        font-size: 1.5rem;
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        font-weight: 600;
+      }
+    }
   }
 </style>

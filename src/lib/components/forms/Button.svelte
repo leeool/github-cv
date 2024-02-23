@@ -10,6 +10,7 @@
     border: 1px solid #ccc;
     background-color: #fff;
     cursor: pointer;
+    width: 100%;
 
     &:hover {
       background-color: #fafafa;
