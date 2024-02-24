@@ -1,16 +1,16 @@
 <script lang="ts">
   export let onChange: (value: string, key: keyof ICurriculum) => void;
   export let value: string | null = "";
-  export let key: keyof ICurriculum;
+  export let key: keyof ICurriculum | string = "";
   export let placeholder: string;
   let editable: HTMLDivElement;
 
   const handleBlur = (e: Event) => {
     let target = e.target as HTMLDivElement;
     let newValue = target.textContent;
-    if (newValue === value) return;
+    if (newValue === value || !newValue) return;
     value = newValue;
-    onChange(newValue as string, key);
+    onChange(newValue as string, key as keyof ICurriculum);
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -25,7 +25,6 @@
   on:keydown={handleKeyDown}
   role="button"
   aria-hidden="true"
-  placeholder="lfsjdklfjlsfjd"
   data-ph={placeholder}
   autocorrect="false"
 >
@@ -40,7 +39,7 @@
   div {
     width: fit-content;
     cursor: pointer;
-    padding: 0.25rem 0.5rem;
+    padding: 0.125rem 0;
     color: inherit;
 
     &:focus {
