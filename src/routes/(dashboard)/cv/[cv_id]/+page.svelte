@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Editable } from "$lib/components";
+  import EditableArray from "$lib/components/forms/EditableArray/EditableArray.svelte";
   import type { LayoutData } from "./$types";
 
   export let data: LayoutData;
@@ -10,39 +11,91 @@
     skills: data.curriculum.skills,
   };
 
-  const handleChange = (value: string, key: keyof ICurriculum) => {
+  let timeOut: number;
+
+  const handleChange = (value: string | string[], key: keyof ICurriculum) => {
+    clearTimeout(timeOut)
+
     updatedCurriculum = {
       ...updatedCurriculum,
       [key]: value,
     };
 
+    timeOut = setTimeout(() => console.log("salvou"), 5000);
   };
 </script>
 
 <div class="container">
   <div class="github-content"></div>
+
   <div class="cv-container">
     <div class="cv-content">
-      <div class="name-container">
-        <Editable
-          value={data.curriculum.name}
-          key="name"
-          placeholder="Nome completo"
-          onChange={handleChange}>{data.curriculum.name}</Editable
-        >
+      <div class="header-container">
+        <h1 class="name">
+          <Editable
+            value={data.curriculum.name}
+            key="name"
+            placeholder="Nome completo"
+            onChange={handleChange}>{data.curriculum.name}</Editable
+          >
+        </h1>
+        <h2 class="job-title">
+          <Editable
+            value={data.curriculum.job_title}
+            key="job_title"
+            placeholder="Sua área de atuação"
+            onChange={handleChange}>{data.curriculum.job_title}</Editable
+          >
+        </h2>
       </div>
-      <Editable
-        value={data.curriculum.job_title}
-        key="job_title"
-        placeholder="Sua área de atuação"
-        onChange={handleChange}>{data.curriculum.job_title}</Editable
-      >
-      <Editable
-        value={data.curriculum.about}
-        key="about"
-        placeholder="Sobre você"
-        onChange={handleChange}>{data.curriculum.about}</Editable
-      >
+
+      <div class="body-container">
+        <div class="about">
+          <h3>Sobre</h3>
+          <p>
+            <Editable
+              value={data.curriculum.about}
+              key="about"
+              placeholder="Sobre você"
+              onChange={handleChange}>{data.curriculum.about}</Editable
+            >
+          </p>
+        </div>
+
+        <div class="about">
+          <h3>Experiências</h3>
+          <p>
+            <Editable
+              value={data.curriculum.about}
+              key="about"
+              placeholder="Sobre você"
+              onChange={handleChange}>{data.curriculum.about}</Editable
+            >
+          </p>
+        </div>
+
+        <div class="about">
+          <h3>Projetos</h3>
+          <p>
+            <Editable
+              value={data.curriculum.about}
+              key="about"
+              placeholder="Sobre você"
+              onChange={handleChange}>{data.curriculum.about}</Editable
+            >
+          </p>
+        </div>
+
+        <div class="about">
+          <h3>Habilidades</h3>
+          <EditableArray
+            values={data.curriculum.skills}
+            key="skills"
+            placeholder="Adicione um habilidade"
+            onChange={handleChange}
+          />
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -73,16 +126,35 @@
     .cv-content {
       width: 100%;
       height: 70rem;
-      padding: 1rem;
 
-      .name-container {
-        background-color: #333;
+      .header-container {
         padding: 1rem 0;
-        font-size: 1.5rem;
-        color: #fff;
+        background-color: #333;
         display: flex;
         justify-content: center;
-        font-weight: 600;
+        display: grid;
+        justify-items: center;
+
+        .name {
+          font-weight: 700;
+          font-size: 1.5rem;
+          color: #fff;
+        }
+
+        .job-title {
+          font-size: 1rem;
+          color: #fff;
+          font-weight: 500;
+        }
+      }
+
+      .body-container {
+        padding: 0 1rem;
+      }
+
+      .about {
+        padding: 1rem;
+        line-height: 1.5;
       }
     }
   }
