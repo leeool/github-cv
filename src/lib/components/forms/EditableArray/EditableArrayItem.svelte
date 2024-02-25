@@ -1,13 +1,21 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
   export let index: number;
   export let value: string;
   export let values: string[];
   export let placeholder: string;
   export let onChange: (value: string[], key: keyof ICurriculum) => void;
   export let key: keyof ICurriculum;
+  let element: HTMLDivElement;
 
   type TKeyUp = KeyboardEvent & {
     currentTarget: HTMLDivElement & EventTarget;
+  };
+
+  const deleteCurrentValue = () => {
+    delete values[index];
+    values = values.filter((v) => v);
   };
 
   const handleChange = (
@@ -17,7 +25,7 @@
     const value = e.currentTarget.textContent;
     if (!value) return;
 
-    values[index] = value;
+    values[index] = value.trim();
   };
 
   const handleBlur = (
@@ -25,25 +33,47 @@
     index: number,
   ) => {
     let target = e.target as HTMLDivElement;
-    let newValue = target.textContent;
+    let newValue = target.textContent?.trim();
 
     if (!newValue || newValue === " ") {
-      delete values[index];
-      values = values.filter((v) => v);
+      deleteCurrentValue();
     } else {
-      values[index] = newValue;
+      values[index] = newValue.trim();
     }
 
     onChange(values, key);
   };
 
   const handleKeyDown = (e: TKeyUp) => {
-    if (["Enter", "NumpadEnter"].includes(e.code)) return e.currentTarget.blur();
+    const value = e.currentTarget.textContent;
+
+    if (
+      value?.length === 20 &&
+      !["Backspace", "Enter", "NumpadEnter"].includes(e.code) &&
+      !e.ctrlKey
+    ) {
+      e.preventDefault();
+      return;
+    }
+
+    if (e.code === "Backspace" && value?.length === 0) {
+      deleteCurrentValue();
+    }
+
+    if (["Enter", "NumpadEnter"].includes(e.code))
+      return e.currentTarget.blur();
   };
+
+  onMount(() => {
+    if (!value) {
+      element.focus();
+    }
+  });
 </script>
 
-<div>
+<li class="wrapper">
   <div
+    bind:this={element}
     class="content"
     contenteditable="true"
     on:blur={(e) => handleBlur(e, index)}
@@ -56,9 +86,15 @@
   >
     {value.trim()}
   </div>
-</div>
+</li>
 
 <style lang="scss">
+  .wrapper {
+    position: relative;
+    border: 1px solid #ccc;
+    padding: 0 0.5rem;
+
+  }
   .content {
     width: fit-content;
     cursor: pointer;

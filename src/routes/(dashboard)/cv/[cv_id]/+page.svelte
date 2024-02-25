@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { Editable } from "$lib/components";
+  import { Button, Editable } from "$lib/components";
   import EditableArray from "$lib/components/forms/EditableArray/EditableArray.svelte";
   import type { LayoutData } from "./$types";
 
   export let data: LayoutData;
+  let element: HTMLDivElement;
+
   let updatedCurriculum: ICurriculumDto = {
     name: data.curriculum.name,
     job_title: data.curriculum.job_title,
@@ -14,7 +16,7 @@
   let timeOut: number;
 
   const handleChange = (value: string | string[], key: keyof ICurriculum) => {
-    clearTimeout(timeOut)
+    clearTimeout(timeOut);
 
     updatedCurriculum = {
       ...updatedCurriculum,
@@ -23,12 +25,17 @@
 
     timeOut = setTimeout(() => console.log("salvou"), 5000);
   };
+
+  const handleSave = () => {
+  };
 </script>
 
 <div class="container">
-  <div class="github-content"></div>
+  <div class="github-content">
+    <Button on:click={handleSave}>salvar</Button>
+  </div>
 
-  <div class="cv-container">
+  <div class="cv-container" bind:this={element}>
     <div class="cv-content">
       <div class="header-container">
         <h1 class="name">
@@ -125,7 +132,7 @@
 
     .cv-content {
       width: 100%;
-      height: 70rem;
+      height: 40rem;
 
       .header-container {
         padding: 1rem 0;

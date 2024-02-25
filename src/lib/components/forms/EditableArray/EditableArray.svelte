@@ -7,14 +7,15 @@
   export let placeholder: string;
 
   const handleAdd = () => {
-    if (values.length && !values[values.length - 1]) return;
+    if ((values.length && !values[values.length - 1]) || values.length === 7)
+      return;
     values = [...values, ""];
   };
 </script>
 
 <div class="container">
   {#if values?.length}
-    <div class="items">
+    <ul class="items">
       {#each values as value, index}
         <EditableArrayItem
           bind:values
@@ -25,16 +26,14 @@
           {onChange}
         />
       {/each}
-    </div>
+    </ul>
   {/if}
-  <button on:click={handleAdd}>+</button>
+  <button on:click={handleAdd} disabled={values.length === 7}>+</button>
 </div>
 
 <style lang="scss">
   .container {
-    display: flex;
     gap: 1rem;
-    align-items: center;
   }
 
   button {
@@ -45,11 +44,29 @@
     background-color: #fff;
     border: 1px solid #ccc;
     font-weight: 700;
+    justify-self: start;
+
+    &:hover {
+      background-color: #fafafa;
+      border-color: #333;
+    }
+    &:active {
+      background-color: #333;
+      color: #fff;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
   }
 
   .items {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 2rem;
+    row-gap: 1rem;
+    justify-content: start;
   }
 </style>

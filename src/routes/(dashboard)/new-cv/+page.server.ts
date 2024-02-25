@@ -26,7 +26,7 @@ export const actions = {
 
     const curriculum = {
       user_id: locals.user?.id,
-      github_curriculum_id: githubUserId,
+      github_user_id: githubUserId,
       name: githubUser.name,
       job_title: "",
       about: githubUser.bio || "",
