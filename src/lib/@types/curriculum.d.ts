@@ -6,6 +6,8 @@ interface ICurriculum {
   job_title: string
   about: string
   skills: string[]
+  updated_at: Date
+  created_at: Date
 }
 
 type ICurriculumDto = Omit<ICurriculum, "id" | "user_id" | "github_curriculum_id">

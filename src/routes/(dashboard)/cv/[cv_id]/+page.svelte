@@ -1,10 +1,13 @@
 <script lang="ts">
+  import { page } from "$app/stores";
   import { Button, Editable } from "$lib/components";
   import EditableArray from "$lib/components/forms/EditableArray/EditableArray.svelte";
   import type { LayoutData } from "./$types";
 
   export let data: LayoutData;
   let element: HTMLDivElement;
+  let save: "Salvando..." | "Currículo salvo." | null = null;
+  let timeOut: number;
 
   let updatedCurriculum: ICurriculumDto = {
     name: data.curriculum.name,
@@ -13,9 +16,23 @@
     skills: data.curriculum.skills,
   };
 
-  let timeOut: number;
+  const fetchUpdate = async (updatedCurriculum: ICurriculumDto) => {
+    const req = await fetch(`/cv/[cv_id]/?cv_id=${$page.params.cv_id}`, {
+      method: "PUT",
+      body: JSON.stringify(updatedCurriculum),
+    });
 
-  const handleChange = (value: string | string[], key: keyof ICurriculum) => {
+    if (req.ok) save = "Currículo salvo.";
+
+    console.log(await req.json());
+    setTimeout(() => (save = null), 5000);
+  };
+
+  const handleChange = async (
+    value: string | string[],
+    key: keyof ICurriculum,
+  ) => {
+    save = null
     clearTimeout(timeOut);
 
     updatedCurriculum = {
@@ -23,16 +40,22 @@
       [key]: value,
     };
 
-    timeOut = setTimeout(() => console.log("salvou"), 5000);
+    save = "Salvando...";
+    timeOut = setTimeout(
+      async () => await fetchUpdate(updatedCurriculum),
+      5000,
+    );
   };
 
-  const handleSave = () => {
-  };
+  const handleSave = () => {};
 </script>
 
 <div class="container">
   <div class="github-content">
-    <Button on:click={handleSave}>salvar</Button>
+    <Button on:click={handleSave}>Download</Button>
+    {#if save}
+      <p>{save}</p>
+    {/if}
   </div>
 
   <div class="cv-container" bind:this={element}>
@@ -119,6 +142,7 @@
     background-color: #fff;
     height: 100%;
     box-shadow: 0px 0px 0px 2px #eee;
+    padding: 1rem;
   }
 
   .cv-container {
